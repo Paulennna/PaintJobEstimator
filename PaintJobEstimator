@@ -1,0 +1,95 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+// DECLARE FUNCTION PROTOTYPES
+double getPricePerGallon();
+int getRooms();
+int calcWallSpace(int rooms);
+void calcPaint(int sqrFeet, double pricePaint, int& gallons, double& cost);
+void calcLabor(int sqrFeet,double& hours,double& cost);
+void totalCost(double& cost,double& lcost);
+
+#define ONEGALLONSQUARE 115
+#define PERHOURLABOR 25.00
+#define NUMLABOUR 8
+int main()
+{
+// header for the program
+cout << "Paint Job Estimator ..." << endl;
+double prcePerGallon = getPricePerGallon();
+int numRooms = getRooms();
+int squareFeet = calcWallSpace(numRooms);
+int gallon;
+double cost;
+double hours,lcost;
+// calling the respective function and displaying the report
+calcPaint(squareFeet,prcePerGallon,gallon,cost);
+calcLabor(squareFeet,hours,lcost);
+totalCost(cost,lcost);
+return 0;
+}
+
+// get pricePerGallon
+double getPricePerGallon(){
+double pricePerGallon;
+do{
+cout << "\nPrice per gallon of paint (>=0) : ";
+cin >> pricePerGallon;
+}while(pricePerGallon < 0);
+return pricePerGallon;
+}
+
+// get Number of rooms from user
+int getRooms(){
+int rooms;
+do{
+cout << endl << "Number of rooms to be painted (>=1) : ";
+cin >> rooms;
+}while(rooms < 1);
+return rooms;
+}
+// calculate the square feet of each room
+int calcWallSpace(int rooms){
+int squareft,sumSqrFt = 0;
+cout << endl << "Square feet of wall space (>=25)" << endl;
+for(int index = 1;index <= rooms; index++){
+do{
+cout << "\tRoom " << index << ": ";
+cin >> squareft;
+}while(squareft < 25);
+sumSqrFt += squareft;
+}
+return sumSqrFt;
+}
+
+// calculate paint cost
+void calcPaint(int sqrFeet, double pricePaint, int& gallons, double& cost){
+float cal = float(sqrFeet) / float(ONEGALLONSQUARE);
+gallons = ceil(cal);
+cout << endl << "\tPaint Job Estimate" << endl;
+cout << "Paint ..." << endl;
+cout << "Gallons of Paint: " << setw(6) << gallons << endl;
+cout << setprecision(2) << fixed;
+cost = pricePaint * gallons;
+cout << "Cost of Paint: " << setw(10) << "$ " << cost << endl;
+}
+
+// calculate labor cost
+void calcLabor(int sqrFeet,double& hours,double& lcost){
+double hrs = (float(sqrFeet) / float(ONEGALLONSQUARE)) * 8 ;
+cout << endl << "Labor ..." << endl;
+cout << setprecision(2) << fixed;
+cout << "Hours of Labor: " << setw(12) << hrs << endl;
+lcost = hrs * PERHOURLABOR ;
+cout << "Cost of Labor: " << setw(10) << "$ " << lcost<< endl;
+}
+
+// calculate total cost
+void totalCost(double& cost,double& lcost){
+double totalCost = cost+lcost;
+cout << setprecision(2) << fixed;
+cout << endl << "Total Cost : " << setw(12) << "$ " << totalCost << endl;
+}
